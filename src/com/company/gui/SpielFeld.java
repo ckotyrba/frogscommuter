@@ -5,7 +5,6 @@ import static com.company.figures.Item.PIXEL_SIZE;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -20,40 +19,29 @@ public class SpielFeld extends JPanel {
     private static final int ZOOM = 4;
     public static final int FPS = (int) (TimeUnit.SECONDS.toMillis(1) / 60);
 
-    private final Level backgroundLevel;
-    private final Level actorLevel;
+    private final Level level;
     private final FPSCalculator fpsCalculator = new FPSCalculator();
     private final MouseListener mouseListener = new MouseListener(this);
     private Graphics graphics;
 
-    public SpielFeld(File backgroundLevel, File actorLevel) {
+    public SpielFeld(File level, File actorLevel) {
         setBackground(new Color(82, 55, 201, 168));
-        this.backgroundLevel = LevelLoader.parseLevel(backgroundLevel);
-        this.actorLevel = LevelLoader.parseLevel(actorLevel);
-        checkLevelSize();
+        this.level = LevelLoader.parseLevel(level, actorLevel);
         addMouseListener(mouseListener);
         addMouseMotionListener(mouseListener);
         new Timer(FPS, this::timerEvent).start();
         new Timer(FPS, fpsCalculator).start();
     }
 
-    private void checkLevelSize() {
-        if (backgroundLevel.getSizeX() != actorLevel.getSizeX()) {
-            throw new IllegalStateException("background sizeX: " + backgroundLevel.getSizeX() + "!= actorlevel sizeX: " + actorLevel.getSizeX());
-        }
-        if (backgroundLevel.getSizeY() != actorLevel.getSizeY()) {
-            throw new IllegalStateException("background sizeY: " + backgroundLevel.getSizeY() + "!= actorlevel sizeY: " + actorLevel.getSizeY());
-        }
-    }
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         this.graphics = g;
-        for (int y = 0; y < backgroundLevel.getSizeY(); y++) {
-            for (int x = 0; x < backgroundLevel.getSizeX(); x++) {
-                drawImage(backgroundLevel.getItem(x, y).getImage(), x * getFieldSize(), y * getFieldSize());
-                drawImage(actorLevel.getItem(x, y).getImage(), x * getFieldSize(), y * getFieldSize());
+        for (int y = 0; y < level.getSizeY(); y++) {
+            for (int x = 0; x < level.getSizeX(); x++) {
+                for (Item item : level.getItems(x, y)) {
+                    drawImage(item.getImage(), x * getFieldSize(), y * getFieldSize());
+                }
             }
         }
         mouseListener.drawDraggedIfNecessary();
@@ -76,22 +64,19 @@ public class SpielFeld extends JPanel {
 
     @Override
     public int getWidth() {
-        return backgroundLevel.getSizeX() * getFieldSize();
+        return level.getSizeX() * getFieldSize();
     }
 
     @Override
     public int getHeight() {
-        return backgroundLevel.getSizeY() * getFieldSize();
+        return level.getSizeY() * getFieldSize();
     }
 
     public List<Item> getSelectedItem(Point point) {
         int x = (int) (point.getX() / SpielFeld.getFieldSize());
         int y = (int) (point.getY() / SpielFeld.getFieldSize());
 
-        ArrayList<Item> result = new ArrayList<>();
-        result.add(backgroundLevel.getItem(x, y));
-        result.add(actorLevel.getItem(x, y));
-        return result;
+        return level.getItems(x, y);
     }
 
     public void timerEvent(ActionEvent event) {

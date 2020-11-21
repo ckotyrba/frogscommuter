@@ -9,12 +9,17 @@ import java.util.List;
 
 public class LevelLoader {
 
-    public static Level parseLevel(File source) {
-        List<String> strings = readFileLines(source);
-        Level result = new Level(strings.get(0).length(), strings.size());
-        for (int y = 0; y < strings.size(); y++) {
-            for (int x = 0; x < strings.get(y).length(); x++) {
-                result.setField(x, y, ItemFactory.buildItem(Character.toString(strings.get(y).charAt(x))));
+    public static Level parseLevel(File... sources) {
+        Level result = null;
+        for (File source : sources) {
+            List<String> strings = readFileLines(source);
+            if (result == null) {
+                result = new Level(strings.get(0).length(), strings.size());
+            }
+            for (int y = 0; y < strings.size(); y++) {
+                for (int x = 0; x < strings.get(y).length(); x++) {
+                    result.setField(x, y, ItemFactory.buildItem(Character.toString(strings.get(y).charAt(x))));
+                }
             }
         }
         return result;

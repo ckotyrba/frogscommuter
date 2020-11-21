@@ -15,7 +15,6 @@ public class FroschGrün implements Item {
 
     @Override
     public boolean allowDrag() {
-        System.out.println("frosch grün");
         return true;
     }
 }

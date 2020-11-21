@@ -16,7 +16,6 @@ public class Application extends JFrame {
 
     private void initUI() {
         SpielFeld spielFeld = new SpielFeld(new File("levels/level1.background"), new File("levels/level1.actors"));
-        spielFeld.setBackground(new Color(0, 0, 0));
         add(spielFeld);
 
         getContentPane().setPreferredSize(new Dimension(spielFeld.getWidth(), spielFeld.getHeight()));

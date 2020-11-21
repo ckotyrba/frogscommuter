@@ -25,6 +25,7 @@ public class SpielFeld extends JPanel {
     private Graphics graphics;
 
     public SpielFeld(File backgroundLevel, File actorLevel) {
+        setBackground(new Color(82, 55, 201, 168));
         this.backgroundLevel = LevelLoader.parseLevel(backgroundLevel);
         this.actorLevel = LevelLoader.parseLevel(actorLevel);
         checkLevelSize();

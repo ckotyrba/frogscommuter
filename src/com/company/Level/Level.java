@@ -1,6 +1,7 @@
 package com.company.Level;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.company.figures.Item;
@@ -31,6 +32,10 @@ public class Level {
     }
 
     public List<Item> getItems(int x, int y) {
+        if (x < 0 || y < 0 ||
+                y > field.size() || x > field.get(y).size()) {
+            return Collections.emptyList();
+        }
         return field.get(y).get(x);
     }
 

@@ -17,4 +17,9 @@ public class Field implements Item {
     public Image getImage() {
         return image;
     }
+
+    @Override
+    public boolean allowDrop() {
+        return true;
+    }
 }

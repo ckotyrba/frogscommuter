@@ -5,6 +5,7 @@ import static com.company.figures.Item.PIXEL_SIZE;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -72,11 +73,20 @@ public class SpielFeld extends JPanel {
         return level.getSizeY() * getFieldSize();
     }
 
-    public List<Item> getSelectedItem(Point point) {
+    public List<Item> getSelectedItems(Point point) {
         int x = (int) (point.getX() / SpielFeld.getFieldSize());
         int y = (int) (point.getY() / SpielFeld.getFieldSize());
 
         return level.getItems(x, y);
+    }
+
+    void dropSelectedItem(Point point, Item itemToDrop) {
+        List<Item> selectedItems = getSelectedItems(point);
+        for (Item selectedItem : new ArrayList<>(selectedItems)) {
+            if (selectedItem.allowDrop()) {
+                selectedItems.add(itemToDrop);
+            }
+        }
     }
 
     public void timerEvent(ActionEvent event) {

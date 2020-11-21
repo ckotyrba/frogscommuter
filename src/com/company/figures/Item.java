@@ -10,4 +10,8 @@ public interface Item {
     default boolean allowDrag() {
         return false;
     }
+
+    default boolean allowDrop() {
+        return false;
+    }
 }

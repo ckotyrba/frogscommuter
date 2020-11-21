@@ -12,6 +12,7 @@ public class MouseListener implements java.awt.event.MouseListener, MouseInputLi
 
     public Point mousePosition;
     public Item draggedItem;
+    private Point dragPositionFrom;
     private SpielFeld spielFeld;
 
     public MouseListener(SpielFeld spielFeld) {
@@ -19,8 +20,8 @@ public class MouseListener implements java.awt.event.MouseListener, MouseInputLi
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-        spielFeld.dropSelectedItem(e.getPoint(), draggedItem);
+    public void mouseReleased(MouseEvent currentMouse) {
+        spielFeld.dropSelectedItem(dragPositionFrom, currentMouse.getPoint(), draggedItem);
         draggedItem = null;
     }
 
@@ -38,6 +39,7 @@ public class MouseListener implements java.awt.event.MouseListener, MouseInputLi
             if (selectedItem.allowDrag()) {
                 draggedItem = selectedItem;
                 mousePosition = e.getPoint();
+                dragPositionFrom = e.getPoint();
             }
         }
     }

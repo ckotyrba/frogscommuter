@@ -80,11 +80,21 @@ public class SpielFeld extends JPanel {
         return level.getItems(x, y);
     }
 
-    void dropSelectedItem(Point point, Item itemToDrop) {
-        List<Item> selectedItems = getSelectedItems(point);
+    public void removeItem(Item itemToRemove, Point point) {
+        int x = (int) (point.getX() / SpielFeld.getFieldSize());
+        int y = (int) (point.getY() / SpielFeld.getFieldSize());
+
+        level.getItems(x, y).remove(itemToRemove);
+    }
+
+
+    void dropSelectedItem(Point from, Point to, Item itemToDrop) {
+        List<Item> selectedItems = getSelectedItems(to);
         for (Item selectedItem : new ArrayList<>(selectedItems)) {
             if (selectedItem.allowDrop()) {
                 selectedItems.add(itemToDrop);
+                removeItem(itemToDrop, from);
+                return;
             }
         }
     }

@@ -22,20 +22,25 @@ public class MouseListener implements java.awt.event.MouseListener, MouseInputLi
         draggedItem = null;
     }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
 
     @Override
     public void mouseDragged(MouseEvent e) {
         mousePosition = e.getPoint();
     }
+
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        draggedItem = spielFeld.getSelectedItem(e.getPoint());
+        mousePosition = e.getPoint();
+    }
+
+    public void drawDraggedIfNecessary() {
+        if (draggedItem != null && mousePosition != null) {
+            spielFeld.drawImageCentered(draggedItem.getImage(), mousePosition.x, mousePosition.y);
+        }
+    }
+
 
     @Override
     public void mouseMoved(MouseEvent e) {
@@ -47,12 +52,14 @@ public class MouseListener implements java.awt.event.MouseListener, MouseInputLi
 
     }
 
+
     @Override
-    public void mousePressed(MouseEvent e) {
-        draggedItem = spielFeld.getSelectedItem(e.getPoint());
-    }
-
-    public void drawDraggedIfNecessary() {
+    public void mouseEntered(MouseEvent e) {
 
     }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+
 }

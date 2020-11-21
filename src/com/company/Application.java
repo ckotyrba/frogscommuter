@@ -5,7 +5,6 @@ import java.io.File;
 
 import javax.swing.*;
 
-import com.company.Level.LevelLoader;
 import com.company.gui.SpielFeld;
 
 public class Application extends JFrame {
@@ -16,7 +15,7 @@ public class Application extends JFrame {
     }
 
     private void initUI() {
-        SpielFeld spielFeld = new SpielFeld(LevelLoader.parseLevel(new File("levels/level1")));
+        SpielFeld spielFeld = new SpielFeld(new File("levels/level1.background"), new File("levels/level1.actors"));
         spielFeld.setBackground(new Color(0, 0, 0));
         add(spielFeld);
 

@@ -2,14 +2,26 @@ package com.company.figures;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.swing.*;
 
 public class Empty implements Item {
+
+    private Image image;
+
+    public Empty() {
+    }
+
+    public Empty(File imageFile) {
+        this.image = new ImageIcon(imageFile.getAbsolutePath()).getImage();
+    }
+
     @Override
     public Image getImage() {
-        BufferedImage bufferedImage = new BufferedImage(PIXEL_SIZE, PIXEL_SIZE, BufferedImage.TYPE_INT_RGB);
-//        Graphics graphics = bufferedImage.getGraphics();
-//        graphics.setColor(new Color(255, 255, 255, 255));
-//        graphics.fillRect(0,0,PIXEL_SIZE,PIXEL_SIZE);
-        return bufferedImage;
+        if (image == null) {
+            return new BufferedImage(Item.PIXEL_SIZE, Item.PIXEL_SIZE, 2);
+        }
+        return image;
     }
 }

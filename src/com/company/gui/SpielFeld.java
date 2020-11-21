@@ -5,6 +5,8 @@ import static com.company.figures.Item.PIXEL_SIZE;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
@@ -82,11 +84,14 @@ public class SpielFeld extends JPanel {
         return backgroundLevel.getSizeY() * getFieldSize();
     }
 
-    public Item getSelectedItem(Point point) {
+    public List<Item> getSelectedItem(Point point) {
         int x = (int) (point.getX() / SpielFeld.getFieldSize());
         int y = (int) (point.getY() / SpielFeld.getFieldSize());
 
-        return backgroundLevel.getItem(x, y);
+        ArrayList<Item> result = new ArrayList<>();
+        result.add(backgroundLevel.getItem(x, y));
+        result.add(actorLevel.getItem(x, y));
+        return result;
     }
 
     public void timerEvent(ActionEvent event) {

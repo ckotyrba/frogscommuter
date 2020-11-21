@@ -14,4 +14,8 @@ public class FroschRot implements Item {
         return image;
     }
 
+    @Override
+    public boolean allowDrag() {
+        return true;
+    }
 }

@@ -2,6 +2,7 @@ package com.company.gui;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.event.MouseInputListener;
 
@@ -31,8 +32,13 @@ public class MouseListener implements java.awt.event.MouseListener, MouseInputLi
 
     @Override
     public void mousePressed(MouseEvent e) {
-        draggedItem = spielFeld.getSelectedItem(e.getPoint());
-        mousePosition = e.getPoint();
+        List<Item> selectedItems = spielFeld.getSelectedItem(e.getPoint());
+        for (Item selectedItem : selectedItems) {
+            if (selectedItem.allowDrag()) {
+                draggedItem = selectedItem;
+                mousePosition = e.getPoint();
+            }
+        }
     }
 
     public void drawDraggedIfNecessary() {

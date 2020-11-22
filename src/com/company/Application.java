@@ -30,7 +30,7 @@ public class Application extends JFrame {
     }
 
     private void initUI() {
-        Level level = LevelLoader.parseLevel(new File("levels/level1.actors"));
+        Level level = LevelLoader.parseLevel(new File("levels/level1.actors1"), new File("levels/level1.actors2"));
         Level background = LevelLoader.parseLevel(new File("levels/level1.background"));
         spielFeld = new GameFieldDrawer(level, background);
         MouseListener mouseListener = new MouseListener(spielFeld, new GameController(level));

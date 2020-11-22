@@ -3,6 +3,7 @@ package com.company.gui;
 import static com.company.figures.Item.PIXEL_SIZE;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import javax.swing.*;
@@ -46,7 +47,7 @@ public class GameFieldDrawer extends JPanel {
 
     private void drawDraggedIfNecessary() {
         if (draggedItem != null && mousePosition != null) {
-            drawImageCentered(draggedItem.getImage(), mousePosition.x, mousePosition.y);
+            drawImageCentered(draggedItem.getImage(), mousePosition);
         }
     }
 
@@ -54,8 +55,26 @@ public class GameFieldDrawer extends JPanel {
         graphics.drawImage(image, x, y, getFieldSize(), getFieldSize(), null);
     }
 
-    private void drawImageCentered(Image image, int x, int y) {
-        graphics.drawImage(image, x - (getFieldSize() / 2), y - (getFieldSize() / 2), getFieldSize(), getFieldSize(), null);
+    private void drawImageCentered(Image image, Point point) {
+        if (!atLoastOneItemAllowDrop(getSelectedItems(point))) {
+            BufferedImage bufferedImage = new BufferedImage(PIXEL_SIZE, PIXEL_SIZE, 2);
+            Graphics graphics = bufferedImage.getGraphics();
+
+            graphics.drawImage(image, 0, 0, null);
+            graphics.setColor(new Color(255, 0, 0));
+            graphics.drawLine(0, 0, PIXEL_SIZE, PIXEL_SIZE);
+            image = bufferedImage;
+        }
+        graphics.drawImage(image, point.x - (getFieldSize() / 2), point.y - (getFieldSize() / 2), getFieldSize(), getFieldSize(), null);
+    }
+
+    private boolean atLoastOneItemAllowDrop(List<Item> selectedItems) {
+        for (Item selectedItem : selectedItems) {
+            if (selectedItem.allowDrop()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static int getFieldSize() {

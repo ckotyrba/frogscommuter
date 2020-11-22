@@ -2,7 +2,7 @@ package com.company.figures;
 
 import java.awt.*;
 
-public interface Item {
+public interface Item /*extends MouseMotionListener*/ {
     int PIXEL_SIZE = 32;
 
     Image getImage();

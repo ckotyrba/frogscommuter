@@ -33,7 +33,7 @@ public class Level {
 
     public List<Item> getItems(int x, int y) {
         if (x < 0 || y < 0 ||
-                y > field.size() || x > field.get(y).size()) {
+                y >= field.size() || x >= field.get(y).size()) {
             return Collections.emptyList();
         }
         return field.get(y).get(x);

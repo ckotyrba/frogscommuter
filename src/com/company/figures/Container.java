@@ -1,18 +1,14 @@
 package com.company.figures;
 
 import java.awt.*;
-import java.io.File;
 
-import javax.swing.*;
+public class Container implements Item {
 
-public class Field implements Item {
-
-    private Image image;
-
+    private final Image image;
     private Item container;
 
-    public Field(File imageFile) {
-        image = new ImageIcon(imageFile.getAbsolutePath()).getImage();
+    public Container(Image image) {
+        this.image = image;
     }
 
     @Override

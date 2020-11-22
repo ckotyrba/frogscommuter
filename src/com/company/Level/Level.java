@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import com.company.figures.Field;
+import com.company.figures.Container;
 import com.company.figures.Item;
 
 public class Level {
@@ -31,8 +31,8 @@ public class Level {
 
     public void setField(int x, int y, Item item) {
         ArrayList<Item> items = field.get(y).get(x);
-        Optional<Item> first = items.stream().filter(field -> field instanceof Field).findFirst();
-        first.ifPresent(value -> ((Field) value).setContainer(item));
+        Optional<Item> first = items.stream().filter(field -> field instanceof Container).findFirst();
+        first.ifPresent(value -> ((Container) value).setContainer(item));
         items.add(item);
     }
 

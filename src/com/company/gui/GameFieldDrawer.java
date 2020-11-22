@@ -20,11 +20,17 @@ public class GameFieldDrawer extends JPanel {
     public Point mousePosition;
     public Item draggedItem;
 
+
     private Graphics graphics;
 
     public GameFieldDrawer(Level level) {
         setBackground(new Color(82, 55, 201, 168));
         this.level = level;
+        drawBackGround(level);
+    }
+
+    private void drawBackGround(Level level) {
+
     }
 
     @Override

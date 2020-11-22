@@ -9,6 +9,8 @@ public class Field implements Item {
 
     private Image image;
 
+    private Item container;
+
     public Field(File imageFile) {
         image = new ImageIcon(imageFile.getAbsolutePath()).getImage();
     }
@@ -20,6 +22,10 @@ public class Field implements Item {
 
     @Override
     public boolean allowDrop() {
-        return true;
+        return container == null;
+    }
+
+    public void setContainer(Item container) {
+        this.container = container;
     }
 }

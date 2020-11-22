@@ -3,7 +3,9 @@ package com.company.Level;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
+import com.company.figures.Field;
 import com.company.figures.Item;
 
 public class Level {
@@ -28,7 +30,10 @@ public class Level {
     }
 
     public void setField(int x, int y, Item item) {
-        field.get(y).get(x).add(item);
+        ArrayList<Item> items = field.get(y).get(x);
+        Optional<Item> first = items.stream().filter(field -> field instanceof Field).findFirst();
+        first.ifPresent(value -> ((Field) value).setContainer(item));
+        items.add(item);
     }
 
     public List<Item> getItems(int x, int y) {

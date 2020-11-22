@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class FroschGrün implements Item {
 
-    private static final Image image = new ImageIcon("images/FroschGrün.png").getImage();
+    private static final Image image = new ImageIcon("images/frog_green.png").getImage();
 
     @Override
     public Image getImage() {

@@ -20,7 +20,7 @@ public class ItemFactory {
             case "l":
                 return new Field(new File("images/Seerose.png"));
             case "b":
-                return new Field(new File("images/Brücke.png"));
+                return new Field(new File("images/bridge.png"));
             case "w":
                 return new Empty(new File("images/Welle.png"));
             default:

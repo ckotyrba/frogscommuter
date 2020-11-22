@@ -7,28 +7,32 @@ import java.util.List;
 import javax.swing.event.MouseInputListener;
 
 import com.company.figures.Item;
+import com.company.gamelogic.GameController;
 
 public class MouseListener implements java.awt.event.MouseListener, MouseInputListener {
 
-    public Point mousePosition;
-    public Item draggedItem;
     private Point dragPositionFrom;
-    private SpielFeld spielFeld;
+    private final GameFieldDrawer spielFeld;
+    private final GameController controller;
 
-    public MouseListener(SpielFeld spielFeld) {
+    public MouseListener(GameFieldDrawer spielFeld, GameController controller) {
         this.spielFeld = spielFeld;
+        this.controller = controller;
     }
 
     @Override
     public void mouseReleased(MouseEvent currentMouse) {
-        spielFeld.dropSelectedItem(dragPositionFrom, currentMouse.getPoint(), draggedItem);
-        draggedItem = null;
+        controller.dropSelectedItem(
+                spielFeld.getPointOfSelectedItem(dragPositionFrom),
+                spielFeld.getPointOfSelectedItem(currentMouse.getPoint()),
+                spielFeld.draggedItem);
+        spielFeld.setDraggedItem(null);
     }
 
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        mousePosition = e.getPoint();
+        spielFeld.setMousePosition(e.getPoint());
     }
 
 
@@ -37,19 +41,12 @@ public class MouseListener implements java.awt.event.MouseListener, MouseInputLi
         List<Item> selectedItems = spielFeld.getSelectedItems(e.getPoint());
         for (Item selectedItem : selectedItems) {
             if (selectedItem.allowDrag()) {
-                draggedItem = selectedItem;
-                mousePosition = e.getPoint();
+                spielFeld.setDraggedItem(selectedItem);
+                spielFeld.setMousePosition(e.getPoint());
                 dragPositionFrom = e.getPoint();
             }
         }
     }
-
-    public void drawDraggedIfNecessary() {
-        if (draggedItem != null && mousePosition != null) {
-            spielFeld.drawImageCentered(draggedItem.getImage(), mousePosition.x, mousePosition.y);
-        }
-    }
-
 
     @Override
     public void mouseMoved(MouseEvent e) {

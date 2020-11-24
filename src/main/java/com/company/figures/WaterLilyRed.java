@@ -7,6 +7,10 @@ import javax.swing.*;
 
 public class WaterLilyRed extends Container {
 
+    public WaterLilyRed(Frog content) {
+        super(createImage(), content);
+    }
+
     public WaterLilyRed() {
         super(createImage());
     }

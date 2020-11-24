@@ -5,12 +5,12 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 import javax.swing.*;
 
 import com.company.Level.Level;
-import com.company.figures.Item;
+import com.company.figures.Container;
+import com.company.gamelogic.GameController;
 
 public class GameFieldDrawer extends JPanel {
 
@@ -19,15 +19,15 @@ public class GameFieldDrawer extends JPanel {
     private final Level level;
     private final FPSCalculator fpsCalculator = new FPSCalculator();
     private Point mousePosition;
-    private Item draggedItem;
-    private boolean dropPossible = false;
+    private Container draggedFrom;
 
-    private final Image backgroundlevel;
+    private final Image backgroundlevel = null;
+    private GameController gameController;
 
-    public GameFieldDrawer(Level level, Level background) {
-        setBackground(new Color(82, 55, 201, 168));
+    public GameFieldDrawer(Level level) {
         this.level = level;
-        this.backgroundlevel = createBackgroundImage(background);
+        this.gameController = new GameController(level.getLogicalOrder());
+        //        this.backgroundlevel = createBackgroundImage(background);
     }
 
     private Image createBackgroundImage(Level background) {
@@ -41,29 +41,42 @@ public class GameFieldDrawer extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
+        g.clearRect(0, 0, getWidth(), getHeight());
+        setBackground(new Color(19, 114, 255, 168));
         super.paintComponent(g);
         g.drawImage(backgroundlevel, 0, 0, null);
         drawLevel(g, level);
         drawDraggedIfNecessary(g);
 
         g.setColor(new Color(255, 0, 0));
-        g.drawString("" + fpsCalculator.getFPS(), 100, 100);
         fpsCalculator.update();
     }
 
     private void drawLevel(Graphics g, Level levelToDraw) {
         for (int y = 0; y < levelToDraw.getSizeY(); y++) {
             for (int x = 0; x < levelToDraw.getSizeX(); x++) {
-//                for (Item item : levelToDraw.getItems(x, y)) {
-//                    drawImage(g, item.getImage(), x * getFieldSize(), y * getFieldSize());
-//                }
+                Container container = levelToDraw.getContainer(x, y);
+                drawImage(g, container.getImage(), x * getFieldSize(), y * getFieldSize());
+                if (container.getContent() != null) {
+                    drawImage(g, container.getContent().getImage(), x * getFieldSize(), y * getFieldSize());
+                }
             }
         }
     }
 
     private void drawDraggedIfNecessary(Graphics g) {
-        if (draggedItem != null && mousePosition != null) {
-            drawImageCentered(g, draggedItem.getImage(), mousePosition);
+        if (draggedFrom != null && mousePosition != null) {
+            Image image = draggedFrom.getContent().getImage();
+            if (!gameController.jumpAllowed(draggedFrom, getSelectedContainer(mousePosition))) {
+                BufferedImage bufferedImage = new BufferedImage(PIXEL_SIZE, PIXEL_SIZE, 2);
+                Graphics graphics = bufferedImage.getGraphics();
+
+                graphics.drawImage(image, 0, 0, null);
+                graphics.setColor(new Color(255, 0, 0));
+                graphics.drawLine(0, 0, PIXEL_SIZE, PIXEL_SIZE);
+                image = bufferedImage;
+            }
+            g.drawImage(image, mousePosition.x - (getFieldSize() / 2), mousePosition.y - (getFieldSize() / 2), getFieldSize(), getFieldSize(), null);
         }
     }
 
@@ -71,27 +84,6 @@ public class GameFieldDrawer extends JPanel {
         g.drawImage(image, x, y, getFieldSize(), getFieldSize(), null);
     }
 
-    private void drawImageCentered(Graphics g, Image image, Point point) {
-        if (!atLoastOneItemAllowDrop(getSelectedItems(point))) {
-            BufferedImage bufferedImage = new BufferedImage(PIXEL_SIZE, PIXEL_SIZE, 2);
-            Graphics graphics = bufferedImage.getGraphics();
-
-            graphics.drawImage(image, 0, 0, null);
-            graphics.setColor(new Color(255, 0, 0));
-            graphics.drawLine(0, 0, PIXEL_SIZE, PIXEL_SIZE);
-            image = bufferedImage;
-        }
-        g.drawImage(image, point.x - (getFieldSize() / 2), point.y - (getFieldSize() / 2), getFieldSize(), getFieldSize(), null);
-    }
-
-    private boolean atLoastOneItemAllowDrop(List<Item> selectedItems) {
-        for (Item selectedItem : selectedItems) {
-            if (selectedItem.allowDrop()) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private static int getFieldSize() {
         return PIXEL_SIZE * ZOOM;
@@ -107,16 +99,8 @@ public class GameFieldDrawer extends JPanel {
         return level.getSizeY() * getFieldSize();
     }
 
-    public List<Item> getSelectedItems(Point point) {
-        int x = getXOfSelectedItem(point);
-        int y = getYOfSelectedItem(point);
-
-//        return level.getItems(x, y);
-        return null;
-    }
-
-    public Item getSelectedItem(Point absolutePoint) {
-        return null; //level.getItems(getXOfSelectedItem(absolutePoint), getYOfSelectedItem(absolutePoint);
+    public Container getSelectedContainer(Point absolutePoint) {
+        return level.getContainer(getXOfSelectedItem(absolutePoint), getYOfSelectedItem(absolutePoint));
     }
 
     private int getXOfSelectedItem(Point point) {
@@ -128,12 +112,17 @@ public class GameFieldDrawer extends JPanel {
     }
 
 
-    public void updateDragPosition(Point mousePosition, boolean dropPossible) {
+    public void updateDragPosition(Point mousePosition) {
         this.mousePosition = mousePosition;
-        this.dropPossible = dropPossible;
     }
 
-    public void setDraggedItem(Item draggedItem) {
-        this.draggedItem = draggedItem;
+    public void dragReleased(Point currentMousePosition) {
+        gameController.doJumpIfPossible(draggedFrom, getSelectedContainer(currentMousePosition));
+        this.draggedFrom = null;
+        repaint();
+    }
+
+    public void startDrag(Point currentMousePosition) {
+        this.draggedFrom = getSelectedContainer(currentMousePosition);
     }
 }

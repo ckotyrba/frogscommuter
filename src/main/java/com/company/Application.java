@@ -1,13 +1,13 @@
 package com.company;
 
 import java.awt.*;
-import java.io.File;
 
 import javax.swing.*;
 
 import com.company.Level.Level;
 import com.company.Level.LevelLoader;
 import com.company.gui.GameFieldDrawer;
+import com.company.gui.MouseListener;
 
 public class Application extends JFrame {
 
@@ -19,12 +19,12 @@ public class Application extends JFrame {
     }
 
     private void initUI() {
-        Level level = LevelLoader.parseLevel(new File("levels/level1.actors1"), new File("levels/level1.actors2"));
-        Level background = LevelLoader.parseLevel(new File("levels/level1.background"));
-        spielFeld = new GameFieldDrawer(level, background);
-//        MouseListener mouseListener = new MouseListener(spielFeld, new GameController(level, new ArrayList<>()));
-//        spielFeld.addMouseListener(mouseListener);
-//        spielFeld.addMouseMotionListener(mouseListener);
+        Level level = LevelLoader.getLevel1();
+
+        spielFeld = new GameFieldDrawer(level);
+        MouseListener mouseListener = new MouseListener(spielFeld);
+        spielFeld.addMouseListener(mouseListener);
+        spielFeld.addMouseMotionListener(mouseListener);
         add(spielFeld);
 
         getContentPane().setPreferredSize(new Dimension(spielFeld.getWidth(), spielFeld.getHeight()));

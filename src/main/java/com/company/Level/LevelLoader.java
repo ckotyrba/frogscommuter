@@ -7,15 +7,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.company.figures.FroschRot;
+import com.company.figures.WaterLilyRed;
+
 public class LevelLoader {
 
-//    public static Level getLevel1() {
-//        Level level = new Level(1, 2);
-//        level.setField(0, 0, ItemFactory.buildItem("l"));
-//        level.setField(0, 1, ItemFactory.buildItem("c"));
-//        level.setField(0, 1, ItemFactory.buildItem("r"));
-//        return level;
-//    }
+    public static Level getLevel1() {
+        Level level = new Level(1, 2);
+        level.setContainer(0,0,new WaterLilyRed(new FroschRot()),0);
+        level.setContainer(0,1,new WaterLilyRed(),1);
+        return level;
+    }
 
         public static Level parseLevel(File... sources) {
             Level result = null;

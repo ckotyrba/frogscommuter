@@ -7,6 +7,11 @@ public class Container implements Item {
     private final Image image;
     private Frog content;
 
+    public Container(Image image, Frog content) {
+        this.image = image;
+        this.content = content;
+    }
+
     public Container(Image image) {
         this.image = image;
     }
@@ -21,7 +26,7 @@ public class Container implements Item {
         return content == null;
     }
 
-    public Item getContent() {
+    public Frog getContent() {
         return content;
     }
 

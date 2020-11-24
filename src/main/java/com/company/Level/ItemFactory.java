@@ -23,8 +23,8 @@ public class ItemFactory {
                 return new Empty();
             case "l":
                 return new WaterLilyRed();
-            //            case "b":
-            //                return new Container(new File("images/bridge.png"));
+            case "b":
+                return new Container(new ImageIcon("images/bridge.png").getImage());
             case "c":
                 return new Container(new ImageIcon("images/Seerose.png").getImage());
             case "w":

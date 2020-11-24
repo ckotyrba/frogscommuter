@@ -18,8 +18,9 @@ public class GameFieldDrawer extends JPanel {
 
     private final Level level;
     private final FPSCalculator fpsCalculator = new FPSCalculator();
-    public Point mousePosition;
-    public Item draggedItem;
+    private Point mousePosition;
+    private Item draggedItem;
+    private boolean dropPossible = false;
 
     private final Image backgroundlevel;
 
@@ -32,7 +33,9 @@ public class GameFieldDrawer extends JPanel {
     private Image createBackgroundImage(Level background) {
         BufferedImage bufferedImage = new BufferedImage(background.getSizeX() * getFieldSize(), background.getSizeY() * getFieldSize(),
                 TYPE_INT_ARGB);
-        drawLevel(bufferedImage.getGraphics(), background);
+        if (level != null) {
+            drawLevel(bufferedImage.getGraphics(), background);
+        }
         return bufferedImage;
     }
 
@@ -51,9 +54,9 @@ public class GameFieldDrawer extends JPanel {
     private void drawLevel(Graphics g, Level levelToDraw) {
         for (int y = 0; y < levelToDraw.getSizeY(); y++) {
             for (int x = 0; x < levelToDraw.getSizeX(); x++) {
-                for (Item item : levelToDraw.getItems(x, y)) {
-                    drawImage(g, item.getImage(), x * getFieldSize(), y * getFieldSize());
-                }
+//                for (Item item : levelToDraw.getItems(x, y)) {
+//                    drawImage(g, item.getImage(), x * getFieldSize(), y * getFieldSize());
+//                }
             }
         }
     }
@@ -108,11 +111,12 @@ public class GameFieldDrawer extends JPanel {
         int x = getXOfSelectedItem(point);
         int y = getYOfSelectedItem(point);
 
-        return level.getItems(x, y);
+//        return level.getItems(x, y);
+        return null;
     }
 
-    public Point getPointOfSelectedItem(Point point) {
-        return new Point(getXOfSelectedItem(point), getYOfSelectedItem(point));
+    public Item getSelectedItem(Point absolutePoint) {
+        return null; //level.getItems(getXOfSelectedItem(absolutePoint), getYOfSelectedItem(absolutePoint);
     }
 
     private int getXOfSelectedItem(Point point) {
@@ -124,8 +128,9 @@ public class GameFieldDrawer extends JPanel {
     }
 
 
-    public void setMousePosition(Point mousePosition) {
+    public void updateDragPosition(Point mousePosition, boolean dropPossible) {
         this.mousePosition = mousePosition;
+        this.dropPossible = dropPossible;
     }
 
     public void setDraggedItem(Item draggedItem) {

@@ -1,41 +1,30 @@
 package com.company;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 
 import com.company.Level.Level;
 import com.company.Level.LevelLoader;
-import com.company.gamelogic.GameController;
 import com.company.gui.GameFieldDrawer;
-import com.company.gui.MouseListener;
 
 public class Application extends JFrame {
 
-    public static final int FPS = (int) (TimeUnit.SECONDS.toMillis(1) / 60);
     private GameFieldDrawer spielFeld;
 
 
     public Application() {
         initUI();
-        new Timer(FPS, this::gameLoop).start();
-    }
-
-    private void gameLoop(ActionEvent event) {
-        spielFeld.repaint();
-
     }
 
     private void initUI() {
         Level level = LevelLoader.parseLevel(new File("levels/level1.actors1"), new File("levels/level1.actors2"));
         Level background = LevelLoader.parseLevel(new File("levels/level1.background"));
         spielFeld = new GameFieldDrawer(level, background);
-        MouseListener mouseListener = new MouseListener(spielFeld, new GameController(level));
-        spielFeld.addMouseListener(mouseListener);
-        spielFeld.addMouseMotionListener(mouseListener);
+//        MouseListener mouseListener = new MouseListener(spielFeld, new GameController(level, new ArrayList<>()));
+//        spielFeld.addMouseListener(mouseListener);
+//        spielFeld.addMouseMotionListener(mouseListener);
         add(spielFeld);
 
         getContentPane().setPreferredSize(new Dimension(spielFeld.getWidth(), spielFeld.getHeight()));

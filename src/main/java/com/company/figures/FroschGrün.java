@@ -4,9 +4,9 @@ import java.awt.*;
 
 import javax.swing.*;
 
-public class FroschRot implements Item {
+public class FroschGrün implements Frog {
 
-    private static final Image image = new ImageIcon("images/frog_red.png").getImage();
+    private static final Image image = new ImageIcon("images/frog_green.png").getImage();
 
     @Override
     public Image getImage() {

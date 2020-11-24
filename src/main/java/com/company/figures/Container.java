@@ -5,7 +5,7 @@ import java.awt.*;
 public class Container implements Item {
 
     private final Image image;
-    private Item container;
+    private Frog content;
 
     public Container(Image image) {
         this.image = image;
@@ -18,10 +18,14 @@ public class Container implements Item {
 
     @Override
     public boolean allowDrop() {
-        return container == null;
+        return content == null;
     }
 
-    public void setContainer(Item container) {
-        this.container = container;
+    public Item getContent() {
+        return content;
+    }
+
+    public void setContent(Frog content) {
+        this.content = content;
     }
 }

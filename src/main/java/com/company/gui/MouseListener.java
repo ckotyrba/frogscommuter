@@ -14,20 +14,25 @@ public class MouseListener implements java.awt.event.MouseListener, MouseInputLi
 
     @Override
     public void mouseReleased(MouseEvent currentMouse) {
-        spielFeld.dragReleased(currentMouse.getPoint());
+        if (!GameFieldDrawer.waitForClick)
+            spielFeld.dragReleased(currentMouse.getPoint());
     }
 
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        spielFeld.updateDragPosition(e.getPoint());
-        spielFeld.repaint();
+        if (!GameFieldDrawer.waitForClick) {
+            spielFeld.updateDragPosition(e.getPoint());
+            spielFeld.repaint();
+        }
     }
-
 
     @Override
     public void mousePressed(MouseEvent e) {
-        spielFeld.startDrag(e.getPoint()) ;
+        if (!GameFieldDrawer.waitForClick)
+            spielFeld.startDrag(e.getPoint());
+        else
+            spielFeld.resetLevel();
     }
 
     @Override

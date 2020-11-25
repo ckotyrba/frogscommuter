@@ -33,4 +33,8 @@ public class Container implements Item {
     public void setContent(Frog content) {
         this.content = content;
     }
+
+    public boolean finished() {
+        return true;
+    }
 }

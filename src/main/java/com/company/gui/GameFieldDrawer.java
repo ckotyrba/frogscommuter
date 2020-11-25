@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 import com.company.Level.Level;
+import com.company.Level.LevelLoader;
 import com.company.figures.Container;
 import com.company.gamelogic.GameController;
 
@@ -16,13 +17,13 @@ public class GameFieldDrawer extends JPanel {
 
     private static final int ZOOM = 4;
 
-    private final Level level;
-    private final FPSCalculator fpsCalculator = new FPSCalculator();
+    private Level level;
     private Point mousePosition;
     private Container draggedFrom;
 
     private final Image backgroundlevel = null;
     private GameController gameController;
+    public static boolean waitForClick = false;
 
     public GameFieldDrawer(Level level) {
         this.level = level;
@@ -44,21 +45,39 @@ public class GameFieldDrawer extends JPanel {
         g.clearRect(0, 0, getWidth(), getHeight());
         setBackground(new Color(19, 114, 255, 168));
         super.paintComponent(g);
+
         g.drawImage(backgroundlevel, 0, 0, null);
         drawLevel(g, level);
         drawDraggedIfNecessary(g);
 
+        if (gameController.won()) {
+            setFont(g, new Color(255, 224, 80));
+            g.drawString("GEWONNEN", 120, 200);
+        }
+
         g.setColor(new Color(255, 0, 0));
-        fpsCalculator.update();
+        if (waitForClick) {
+            g.clearRect(getWidth() - 500, getHeight() - 60, 500, 60);
+            setFont(g, new Color(0, 0, 0));
+            g.drawString("Kein Zug mehr möglich.", 10, getHeight() - 30);
+            g.drawString("Bitte Klicken", 10, getHeight() - 10);
+        }
+    }
+
+    private void setFont(Graphics g, Color color) {
+        g.setFont(new Font("DEFAULT", Font.BOLD, 20));
+        g.setColor(color);
     }
 
     private void drawLevel(Graphics g, Level levelToDraw) {
         for (int y = 0; y < levelToDraw.getSizeY(); y++) {
             for (int x = 0; x < levelToDraw.getSizeX(); x++) {
                 Container container = levelToDraw.getContainer(x, y);
-                drawImage(g, container.getImage(), x * getFieldSize(), y * getFieldSize());
-                if (container.getContent() != null) {
-                    drawImage(g, container.getContent().getImage(), x * getFieldSize(), y * getFieldSize());
+                if (container != null) {
+                    drawImage(g, container.getImage(), x * getFieldSize(), y * getFieldSize());
+                    if (container.getContent() != null) {
+                        drawImage(g, container.getContent().getImage(), x * getFieldSize(), y * getFieldSize());
+                    }
                 }
             }
         }
@@ -100,6 +119,9 @@ public class GameFieldDrawer extends JPanel {
     }
 
     public Container getSelectedContainer(Point absolutePoint) {
+        if (absolutePoint.getX() >= getWidth() || absolutePoint.getX() < 0 ||
+                absolutePoint.getY() >= getHeight() || absolutePoint.getY() < 0)
+            return null;
         return level.getContainer(getXOfSelectedItem(absolutePoint), getYOfSelectedItem(absolutePoint));
     }
 
@@ -119,10 +141,20 @@ public class GameFieldDrawer extends JPanel {
     public void dragReleased(Point currentMousePosition) {
         gameController.doJumpIfPossible(draggedFrom, getSelectedContainer(currentMousePosition));
         this.draggedFrom = null;
+        if (!gameController.anyStepPossible()) {
+            waitForClick = true;
+        }
         repaint();
     }
 
     public void startDrag(Point currentMousePosition) {
         this.draggedFrom = getSelectedContainer(currentMousePosition);
+    }
+
+    public void resetLevel() {
+        waitForClick = false;
+        this.level = LevelLoader.getLevel1();
+        this.gameController = new GameController(level.getLogicalOrder());
+        repaint();
     }
 }

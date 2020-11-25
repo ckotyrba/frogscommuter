@@ -7,15 +7,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.company.figures.Bridge;
+import com.company.figures.FroschGrün;
 import com.company.figures.FroschRot;
+import com.company.figures.WaterLilyGreen;
 import com.company.figures.WaterLilyRed;
+
 
 public class LevelLoader {
 
     public static Level getLevel1() {
-        Level level = new Level(1, 2);
-        level.setContainer(0,0,new WaterLilyRed(new FroschRot()),0);
-        level.setContainer(0,1,new WaterLilyRed(),1);
+        Level level = new Level(3, 4);
+        level.setContainer(0,3,new WaterLilyRed(new FroschGrün()),0);
+        level.setContainer(0,2,new WaterLilyRed(new FroschGrün()),1);
+        level.setContainer(0,1,new WaterLilyRed(new FroschGrün()),2);
+        level.setContainer(0,0,new WaterLilyRed(new FroschGrün()),3);
+        level.setContainer(1,0,new Bridge(),4);
+        level.setContainer(2,0,new WaterLilyGreen(new FroschRot()),5);
+        level.setContainer(2,1,new WaterLilyGreen(new FroschRot()),6);
+        level.setContainer(2,2,new WaterLilyGreen(new FroschRot()),7);
+        level.setContainer(2,3,new WaterLilyGreen(new FroschRot()),8);
         return level;
     }
 

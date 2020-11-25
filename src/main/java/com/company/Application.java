@@ -7,6 +7,7 @@ import javax.swing.*;
 import com.company.Level.Level;
 import com.company.Level.LevelLoader;
 import com.company.gui.GameFieldDrawer;
+import com.company.gui.KeyListener;
 import com.company.gui.MouseListener;
 
 public class Application extends JFrame {
@@ -25,6 +26,8 @@ public class Application extends JFrame {
         MouseListener mouseListener = new MouseListener(spielFeld);
         spielFeld.addMouseListener(mouseListener);
         spielFeld.addMouseMotionListener(mouseListener);
+        KeyListener keyListener = new KeyListener(spielFeld);
+        addKeyListener(keyListener);
         add(spielFeld);
 
         getContentPane().setPreferredSize(new Dimension(spielFeld.getWidth(), spielFeld.getHeight()));

@@ -22,13 +22,15 @@ public class KeyListener implements java.awt.event.KeyListener {
         System.out.println(e.getKeyChar());
         if (e.getKeyChar() == 'r') {
             gameFieldDrawer.resetLevel();
-        } else if (e.getKeyChar() == 'z') {
-            gameController.unDoLastJump();
-            gameFieldDrawer.repaint();
-        } else if (e.getKeyChar() == 'h') {
-            autoPlay.doNextMove();
-            gameFieldDrawer.repaint();
         }
+
+//        else if (e.getKeyChar() == 'z') {
+//            gameController.unDoLastJump();
+//            gameFieldDrawer.repaint();
+//        } else if (e.getKeyChar() == 'h') {
+//            autoPlay.doNextMove();
+//            gameFieldDrawer.repaint();
+//        }
     }
 
     @Override

@@ -20,9 +20,9 @@ public class Application extends JFrame {
     }
 
     private void initUI() {
-        Level level = LevelLoader.getLevel2();
+        Level level = LevelLoader.getLevel1();
 
-        spielFeld = new GameFieldDrawer(level);
+        spielFeld = new GameFieldDrawer(level, this);
         MouseListener mouseListener = new MouseListener(spielFeld);
         spielFeld.addMouseListener(mouseListener);
         spielFeld.addMouseMotionListener(mouseListener);

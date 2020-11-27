@@ -16,6 +16,9 @@ import com.company.gamelogic.GameController;
 public class GameFieldDrawer extends JPanel {
 
     private static final int ZOOM = 4;
+    private final JFrame frame;
+
+    private int levelId = 1;
 
     private Level level;
     private Point mousePosition;
@@ -25,7 +28,8 @@ public class GameFieldDrawer extends JPanel {
     private GameController gameController;
     public static boolean waitForClick = false;
 
-    public GameFieldDrawer(Level level) {
+    public GameFieldDrawer(Level level, JFrame frame) {
+        this.frame = frame;
         this.level = level;
         this.gameController = new GameController(level.getLogicalOrder());
         this.backgroundlevel = createBackgroundImage();
@@ -55,10 +59,11 @@ public class GameFieldDrawer extends JPanel {
         if (gameController.won()) {
             setFont(g, new Color(255, 224, 80));
             g.drawString("GEWONNEN", 120, 200);
+            waitForClick = true;
         }
 
         g.setColor(new Color(255, 0, 0));
-        if (waitForClick) {
+        if (waitForClick && !gameController.won()) {
             g.clearRect(getWidth() - 500, getHeight() - 60, 500, 60);
             setFont(g, new Color(0, 0, 0));
             g.drawString("Kein Zug mehr möglich.", 10, getHeight() - 30);
@@ -86,7 +91,7 @@ public class GameFieldDrawer extends JPanel {
     }
 
     private void drawDraggedIfNecessary(Graphics g) {
-        if (draggedFrom != null && mousePosition != null) {
+        if (draggedFrom != null && draggedFrom.getContent() != null && mousePosition != null) {
             Image image = draggedFrom.getContent().getImage();
             if (!gameController.jumpAllowed(draggedFrom, getSelectedContainer(mousePosition))) {
                 BufferedImage bufferedImage = new BufferedImage(PIXEL_SIZE, PIXEL_SIZE, 2);
@@ -143,7 +148,7 @@ public class GameFieldDrawer extends JPanel {
     public void dragReleased(Point currentMousePosition) {
         gameController.doJumpIfPossible(draggedFrom, getSelectedContainer(currentMousePosition));
         this.draggedFrom = null;
-        if (!gameController.anyStepPossible()) {
+        if (!gameController.anyStepPossible() && !gameController.won()) {
             waitForClick = true;
         }
         repaint();
@@ -155,9 +160,20 @@ public class GameFieldDrawer extends JPanel {
 
     public void resetLevel() {
         waitForClick = false;
-        this.level = LevelLoader.getLevel3();
-        this.gameController = new GameController(level.getLogicalOrder());
-        repaint();
+        if (gameController.won()) {
+            levelId++;
+        }
+        if (levelId <= 3) {
+            this.level = LevelLoader.getLevel(levelId);
+            this.gameController = new GameController(level.getLogicalOrder());
+            this.backgroundlevel = createBackgroundImage();
+            repaint();
+
+            frame.remove(this);
+            frame.add(this);
+            frame.getContentPane().setPreferredSize(new Dimension(getWidth(), getHeight()));
+            frame.pack();
+        }
     }
 
     public GameController getGameController() {

@@ -21,21 +21,23 @@ public class GameFieldDrawer extends JPanel {
     private Point mousePosition;
     private Container draggedFrom;
 
-    private final Image backgroundlevel = null;
+    private Image backgroundlevel;
     private GameController gameController;
     public static boolean waitForClick = false;
 
     public GameFieldDrawer(Level level) {
         this.level = level;
         this.gameController = new GameController(level.getLogicalOrder());
-        //        this.backgroundlevel = createBackgroundImage(background);
+        this.backgroundlevel = createBackgroundImage();
     }
 
-    private Image createBackgroundImage(Level background) {
-        BufferedImage bufferedImage = new BufferedImage(background.getSizeX() * getFieldSize(), background.getSizeY() * getFieldSize(),
+    private Image createBackgroundImage() {
+        BufferedImage bufferedImage = new BufferedImage(level.getSizeX() * getFieldSize(), level.getSizeY() * getFieldSize(),
                 TYPE_INT_ARGB);
-        if (level != null) {
-            drawLevel(bufferedImage.getGraphics(), background);
+        for (int y = 0; y < level.getSizeY(); y++) {
+            for (int x = 0; x < level.getSizeX(); x++) {
+               drawImage(bufferedImage.getGraphics(),level.getBackground(x, y).getImage(), x * getFieldSize(), y * getFieldSize());
+            }
         }
         return bufferedImage;
     }
@@ -43,7 +45,7 @@ public class GameFieldDrawer extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         g.clearRect(0, 0, getWidth(), getHeight());
-        setBackground(new Color(19, 114, 255, 168));
+        setBackground(new Color(7, 87, 205, 168));
         super.paintComponent(g);
 
         g.drawImage(backgroundlevel, 0, 0, null);
@@ -153,7 +155,7 @@ public class GameFieldDrawer extends JPanel {
 
     public void resetLevel() {
         waitForClick = false;
-        this.level = LevelLoader.getLevel1();
+        this.level = LevelLoader.getLevel3();
         this.gameController = new GameController(level.getLogicalOrder());
         repaint();
     }

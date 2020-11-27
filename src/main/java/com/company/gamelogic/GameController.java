@@ -12,7 +12,6 @@ public class GameController {
 
     private List<Move> moves = new ArrayList<>();
 
-
     public GameController(List<Container> containers) {
         this.containers = containers;
     }

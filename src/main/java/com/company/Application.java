@@ -20,7 +20,7 @@ public class Application extends JFrame {
     }
 
     private void initUI() {
-        Level level = LevelLoader.getLevel1();
+        Level level = LevelLoader.getLevel2();
 
         spielFeld = new GameFieldDrawer(level);
         MouseListener mouseListener = new MouseListener(spielFeld);

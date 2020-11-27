@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.company.figures.Container;
+import com.company.figures.Empty;
 import com.company.figures.Item;
 
 public class Level {
@@ -30,7 +31,11 @@ public class Level {
     }
 
     public Item getBackground(int x, int y) {
-        return background[y][x];
+        Item item = background[y][x];
+        if (item == null) {
+            return new Empty();
+        }
+        return item;
     }
 
     public Container getContainer(int x, int y) {

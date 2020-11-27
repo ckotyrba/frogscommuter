@@ -14,11 +14,14 @@ public class AutoPlay {
     }
 
     public void doNextMove() {
+        if(gameController.won())
+            return;
         List<Move> firstWinningRoute = getFirstWinningRoute(new ArrayList<>(), gameController.getCurrentState());
         if (firstWinningRoute == null) {
             throw new IllegalStateException("Level impossible");
         }
         Move firstMove = firstWinningRoute.get(0);
+        // moves contains deepCopy so references are wrong
         Container containerFrom = gameController.getCurrentState().get(firstMove.indexFrom);
         Container containerTo = gameController.getCurrentState().get(firstMove.indexTo);
         gameController.doJumpIfPossible(containerFrom, containerTo);

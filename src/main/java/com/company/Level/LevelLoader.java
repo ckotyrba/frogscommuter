@@ -1,5 +1,7 @@
 package com.company.Level;
 
+import static com.company.Level.ItemFactory.getFileFromResource;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -51,8 +53,8 @@ public class LevelLoader {
         level.setContainer(2, 1, new WaterLilyGreen(new FroschRot()), 3);
         level.setContainer(2, 2, new WaterLilyGreen(new FroschRot()), 4);
 
-        level.setBackground(1, 0, new Empty(new File("images/Fisch.png")));
-        level.setBackground(1, 2, new Empty(new File("images/Welle.png")));
+        level.setBackground(1, 0, new Empty(getFileFromResource("/images/Fisch.png")));
+        level.setBackground(1, 2, new Empty(getFileFromResource(("/images/Welle.png"))));
         return level;
     }
 

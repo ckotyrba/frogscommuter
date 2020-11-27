@@ -1,12 +1,12 @@
 package com.company.figures;
 
-import java.awt.*;
+import static com.company.Level.ItemFactory.getFileFromResource;
 
-import javax.swing.*;
+import java.awt.*;
 
 public class WaterLily extends Container {
 
-    private static Image image = new ImageIcon("images/Seerose.png").getImage();
+    private static Image image = getFileFromResource("/images/Seerose.png");
 
     public WaterLily(Frog content) {
         super(createImage(), content);

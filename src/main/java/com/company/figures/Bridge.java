@@ -2,11 +2,11 @@ package com.company.figures;
 
 import java.awt.*;
 
-import javax.swing.*;
+import com.company.Level.ItemFactory;
 
 public class Bridge extends Container {
 
-    private static Image image = new ImageIcon("images/bridge.png").getImage();
+    private static Image image = ItemFactory.getFileFromResource("/images/bridge.png");
 
     public Bridge() {
         super(image);

@@ -1,12 +1,12 @@
 package com.company.figures;
 
-import java.awt.*;
+import static com.company.Level.ItemFactory.getFileFromResource;
 
-import javax.swing.*;
+import java.awt.*;
 
 public class FroschRot implements Frog {
 
-    private static final Image image = new ImageIcon("images/frog_red.png").getImage();
+    private static final Image image = getFileFromResource("/images/frog_red.png");
 
     @Override
     public Image getImage() {

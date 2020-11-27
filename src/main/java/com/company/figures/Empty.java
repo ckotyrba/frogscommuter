@@ -2,9 +2,6 @@ package com.company.figures;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-
-import javax.swing.*;
 
 public class Empty implements Item {
 
@@ -13,8 +10,8 @@ public class Empty implements Item {
     public Empty() {
     }
 
-    public Empty(File imageFile) {
-        this.image = new ImageIcon(imageFile.getAbsolutePath()).getImage();
+    public Empty(Image image) {
+        this.image = image;
     }
 
     @Override

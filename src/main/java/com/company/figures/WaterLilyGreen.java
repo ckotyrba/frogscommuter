@@ -25,6 +25,11 @@ public class WaterLilyGreen extends Container {
     }
 
     public boolean finished() {
-        return getContent()!=null && getContent() instanceof FroschGrün;
+        return getContent() != null && getContent() instanceof FroschGrün;
+    }
+
+    @Override
+    public WaterLilyGreen copy() {
+        return new WaterLilyGreen(getContent());
     }
 }

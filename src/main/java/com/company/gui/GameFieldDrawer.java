@@ -157,4 +157,8 @@ public class GameFieldDrawer extends JPanel {
         this.gameController = new GameController(level.getLogicalOrder());
         repaint();
     }
+
+    public GameController getGameController() {
+        return gameController;
+    }
 }

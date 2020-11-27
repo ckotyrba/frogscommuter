@@ -14,11 +14,6 @@ public class FroschGrün implements Frog {
     }
 
     @Override
-    public boolean allowDrag() {
-        return true;
-    }
-
-    @Override
     public boolean jumpPossible(int indexFrom, int indexTo) {
         return indexFrom < indexTo;
     }

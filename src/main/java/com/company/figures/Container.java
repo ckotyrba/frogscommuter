@@ -21,11 +21,6 @@ public class Container implements Item {
         return image;
     }
 
-    @Override
-    public boolean allowDrop() {
-        return content == null;
-    }
-
     public Frog getContent() {
         return content;
     }
@@ -36,5 +31,9 @@ public class Container implements Item {
 
     public boolean finished() {
         return true;
+    }
+
+    public Container copy() {
+        return new Container(image, content);
     }
 }

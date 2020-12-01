@@ -24,10 +24,10 @@ public class AutoPlay implements ActionListener {
         System.out.println("timer started");
     }
 
-    public void doNextMove() {
+    public Move doNextMove() {
         if (gameController.won()) {
             timer.stop();
-            return;
+            return null;
         }
         List<Move> firstWinningRoute = getFirstWinningRoute(new ArrayList<>(), gameController.getCurrentState());
         if (firstWinningRoute == null) {
@@ -39,6 +39,7 @@ public class AutoPlay implements ActionListener {
         Container containerTo = gameController.getCurrentState().get(firstMove.indexTo);
         gameController.doJumpIfPossible(containerFrom, containerTo);
         System.out.println("jump done");
+        return firstMove;
     }
 
     private List<Move> getFirstWinningRoute(List<Move> movesAlreadyGone, List<Container> currentState) {

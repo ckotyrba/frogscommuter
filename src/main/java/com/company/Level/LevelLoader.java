@@ -51,6 +51,22 @@ public class LevelLoader {
         return level;
     }
 
+    public static Level getLevel4() {
+        Level level = new Level(3, 5);
+        level.setContainer(0, 4, new WaterLilyRed(new FroschGrün()), 0);
+        level.setContainer(0, 3, new WaterLilyRed(new FroschGrün()), 1);
+        level.setContainer(0, 2, new WaterLilyRed(new FroschGrün()), 2);
+        level.setContainer(0, 1, new WaterLilyRed(new FroschGrün()), 3);
+        level.setContainer(0, 0, new WaterLilyRed(new FroschGrün()), 4);
+        level.setContainer(1, 0, new Bridge(), 5);
+        level.setContainer(2, 0, new WaterLilyGreen(new FroschRot()), 6);
+        level.setContainer(2, 1, new WaterLilyGreen(new FroschRot()), 7);
+        level.setContainer(2, 2, new WaterLilyGreen(new FroschRot()), 8);
+        level.setContainer(2, 3, new WaterLilyGreen(new FroschRot()), 9);
+        level.setContainer(2, 4, new WaterLilyGreen(new FroschRot()), 10);
+        return level;
+    }
+
 
     public static Level getLevel(int levelId) {
         switch (levelId) {

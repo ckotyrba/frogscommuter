@@ -5,6 +5,8 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.*;
 
@@ -13,7 +15,7 @@ import com.company.Level.LevelLoader;
 import com.company.figures.Container;
 import com.company.gamelogic.GameController;
 
-public class GameFieldDrawer extends JPanel {
+public class GameFieldDrawer extends JPanel implements Observer {
 
     private static final int ZOOM = 4;
     private final JFrame frame;
@@ -30,9 +32,19 @@ public class GameFieldDrawer extends JPanel {
 
     public GameFieldDrawer(Level level, JFrame frame) {
         this.frame = frame;
+        init(level);
+    }
+
+    private void init(Level level) {
         this.level = level;
         this.gameController = new GameController(level.getLogicalOrder());
         this.backgroundlevel = createBackgroundImage();
+
+        // workaround to clear resize caches
+        frame.remove(this);
+        frame.add(this);
+        frame.getContentPane().setPreferredSize(new Dimension(getWidth(), getHeight()));
+        frame.pack();
     }
 
     private Image createBackgroundImage() {
@@ -143,6 +155,7 @@ public class GameFieldDrawer extends JPanel {
 
     public void updateDragPosition(Point mousePosition) {
         this.mousePosition = mousePosition;
+        repaint();
     }
 
     public void dragReleased(Point currentMousePosition) {
@@ -164,19 +177,17 @@ public class GameFieldDrawer extends JPanel {
             levelId++;
         }
         if (levelId <= 3) {
-            this.level = LevelLoader.getLevel(levelId);
-            this.gameController = new GameController(level.getLogicalOrder());
-            this.backgroundlevel = createBackgroundImage();
-            repaint();
-
-            frame.remove(this);
-            frame.add(this);
-            frame.getContentPane().setPreferredSize(new Dimension(getWidth(), getHeight()));
-            frame.pack();
+            init(LevelLoader.getLevel(levelId));
         }
     }
 
     public GameController getGameController() {
         return gameController;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        repaint();
+        System.out.println("observer repaint");
     }
 }

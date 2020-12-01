@@ -2,19 +2,12 @@ package com.company.gui;
 
 import java.awt.event.KeyEvent;
 
-import com.company.gamelogic.AutoPlay;
-import com.company.gamelogic.GameController;
-
 public class KeyListener implements java.awt.event.KeyListener {
 
-    private final GameController gameController;
     private GameFieldDrawer gameFieldDrawer;
-    private AutoPlay autoPlay;
 
-    public KeyListener(GameFieldDrawer gameFieldDrawer, GameController gameController) {
+    public KeyListener(GameFieldDrawer gameFieldDrawer) {
         this.gameFieldDrawer = gameFieldDrawer;
-        this.gameController = gameController;
-        this.autoPlay = new AutoPlay(gameController);
     }
 
     @Override
@@ -22,24 +15,20 @@ public class KeyListener implements java.awt.event.KeyListener {
         System.out.println(e.getKeyChar());
         if (e.getKeyChar() == 'r') {
             gameFieldDrawer.resetLevel();
+        } else if (e.getKeyChar() == 'z') {
+            gameFieldDrawer.getGameController().unDoLastJump();
+        } else if (e.getKeyChar() == 'h') {
+            gameFieldDrawer.getGameController().getAutoPlay().doNextMove();
+            gameFieldDrawer.repaint();
+//            autoPlay.startWithTimer(1000);
         }
-
-//        else if (e.getKeyChar() == 'z') {
-//            gameController.unDoLastJump();
-//            gameFieldDrawer.repaint();
-//        } else if (e.getKeyChar() == 'h') {
-//            autoPlay.doNextMove();
-//            gameFieldDrawer.repaint();
-//        }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
     }
 }

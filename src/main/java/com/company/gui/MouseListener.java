@@ -23,7 +23,6 @@ public class MouseListener implements java.awt.event.MouseListener, MouseInputLi
     public void mouseDragged(MouseEvent e) {
         if (!GameFieldDrawer.waitForClick) {
             spielFeld.updateDragPosition(e.getPoint());
-            spielFeld.repaint();
         }
     }
 

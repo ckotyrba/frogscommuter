@@ -26,7 +26,7 @@ public class Application extends JFrame {
         MouseListener mouseListener = new MouseListener(spielFeld);
         spielFeld.addMouseListener(mouseListener);
         spielFeld.addMouseMotionListener(mouseListener);
-        KeyListener keyListener = new KeyListener(spielFeld, spielFeld.getGameController());
+        KeyListener keyListener = new KeyListener(spielFeld);
         addKeyListener(keyListener);
         add(spielFeld);
 

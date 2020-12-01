@@ -6,7 +6,7 @@ import java.util.List;
 import com.company.figures.Container;
 import com.company.figures.Frog;
 
-public class GameController {
+public class GameController  {
 
     private final List<Container> containers;
 
@@ -90,6 +90,10 @@ public class GameController {
 
     public List<Container> getCurrentState() {
         return containers;
+    }
+
+    public AutoPlay getAutoPlay() {
+        return new AutoPlay(this);
     }
 
 

@@ -30,13 +30,12 @@ public class Application extends JFrame {
         addKeyListener(keyListener);
         add(spielFeld);
 
-        getContentPane().setPreferredSize(new Dimension(spielFeld.getWidth(), spielFeld.getHeight()));
-        pack();
-
         setTitle("Commuter Frogs");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+
+        spielFeld.resetLevel();
     }
 
     public static void main(String[] args) {

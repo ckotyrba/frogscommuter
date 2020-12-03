@@ -7,15 +7,18 @@ import java.util.List;
 
 import javax.swing.*;
 
+import com.company.Measurement;
 import com.company.figures.Container;
 import com.company.gamelogic.GameController.Move;
 
 public class AutoPlay implements ActionListener {
     private GameController gameController;
     private Timer timer = new Timer(0, this);
+    private List<Move> winningRoute;
 
     public AutoPlay(GameController gameController) {
         this.gameController = gameController;
+        recalculateWinningRoute();
     }
 
     public void startWithTimer(int millisDelay) {
@@ -29,16 +32,12 @@ public class AutoPlay implements ActionListener {
             timer.stop();
             return null;
         }
-        List<Move> firstWinningRoute = getFirstWinningRoute(new ArrayList<>(), gameController.getCurrentState());
-        if (firstWinningRoute == null) {
-            throw new IllegalStateException("Level impossible");
-        }
-        Move firstMove = firstWinningRoute.get(0);
+
+        Move firstMove = winningRoute.remove(0);
         // moves contains deepCopy so references are wrong
         Container containerFrom = gameController.getCurrentState().get(firstMove.indexFrom);
         Container containerTo = gameController.getCurrentState().get(firstMove.indexTo);
         gameController.doJumpIfPossible(containerFrom, containerTo);
-        System.out.println("jump done");
         return firstMove;
     }
 
@@ -70,6 +69,16 @@ public class AutoPlay implements ActionListener {
             result.add(container.copy());
         }
         return result;
+    }
+
+    public void recalculateWinningRoute() {
+        Measurement.measure(() -> {
+            List<Move> firstWinningRoute = getFirstWinningRoute(new ArrayList<>(), gameController.getCurrentState());
+            if (firstWinningRoute == null) {
+                throw new IllegalStateException("Level impossible");
+            }
+            this.winningRoute = firstWinningRoute;
+        });
     }
 
     @Override

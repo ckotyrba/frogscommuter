@@ -11,6 +11,7 @@ public class GameController  {
     private final List<Container> containers;
 
     private List<Move> moves = new ArrayList<>();
+    private AutoPlay autoPlay;
 
     public GameController(List<Container> containers) {
         this.containers = containers;
@@ -20,6 +21,11 @@ public class GameController  {
         if (from == null || to == null)
             return false;
         return jumpAllowed(containers.indexOf(from), containers.indexOf(to));
+    }
+
+    public void doJumpIfPossibleManuel(Container from, Container to) {
+        doJumpIfPossible(from, to);
+        getAutoPlay().recalculateWinningRoute();
     }
 
     public void doJumpIfPossible(Container from, Container to) {
@@ -78,10 +84,14 @@ public class GameController  {
 
     public List<Move> getAllPossibleMoves() {
         List<Move> result = new ArrayList<>();
-        for (Container from : containers) {
-            for (Container to : containers) {
-                if (jumpAllowed(from, to)) {
-                    result.add(new Move(from, to, containers.indexOf(from), containers.indexOf(to)));
+        for (int index = 0; index < containers.size(); index++) {
+            if (containers.get(index).getContent() == null) {
+                Container to = containers.get(index);
+                for (int indexFrom = Math.max(index - 2, 0); indexFrom <= Math.min(index + 2, containers.size() - 1); indexFrom++) {
+                    Container from = containers.get(indexFrom);
+                    if (jumpAllowed(from, to)) {
+                        result.add(new Move(from, to, containers.indexOf(from), containers.indexOf(to)));
+                    }
                 }
             }
         }
@@ -93,7 +103,9 @@ public class GameController  {
     }
 
     public AutoPlay getAutoPlay() {
-        return new AutoPlay(this);
+        if (autoPlay == null)
+            autoPlay = new AutoPlay(this);
+        return autoPlay;
     }
 
 

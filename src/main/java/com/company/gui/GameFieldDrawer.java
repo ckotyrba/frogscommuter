@@ -159,7 +159,7 @@ public class GameFieldDrawer extends JPanel implements Observer {
     }
 
     public void dragReleased(Point currentMousePosition) {
-        gameController.doJumpIfPossible(draggedFrom, getSelectedContainer(currentMousePosition));
+        gameController.doJumpIfPossibleManuel(draggedFrom, getSelectedContainer(currentMousePosition));
         this.draggedFrom = null;
         if (!gameController.anyStepPossible() && !gameController.won()) {
             waitForClick = true;

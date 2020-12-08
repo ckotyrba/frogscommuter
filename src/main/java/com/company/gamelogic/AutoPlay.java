@@ -9,6 +9,8 @@ import javax.swing.*;
 
 import com.company.Measurement;
 import com.company.figures.Container;
+import com.company.figures.FroschGrün;
+import com.company.figures.FroschRot;
 import com.company.gamelogic.GameController.Move;
 
 public class AutoPlay implements ActionListener {
@@ -42,6 +44,9 @@ public class AutoPlay implements ActionListener {
     }
 
     private List<Move> getFirstWinningRoute(List<Move> movesAlreadyGone, List<Container> currentState) {
+        if (!winningPossible(currentState)) {
+            return null;
+        }
         GameController gameController = new GameController(deepCopy(currentState));
         List<Move> allPossibleMoves = gameController.getAllPossibleMoves();
         if (allPossibleMoves.isEmpty()) {
@@ -69,6 +74,63 @@ public class AutoPlay implements ActionListener {
             result.add(container.copy());
         }
         return result;
+    }
+
+    private boolean winningPossible(List<Container> currentState) {
+        return !doubleGreenBehindRed(currentState) && !doubleRedBehindGreen(currentState);
+    }
+
+    private boolean doubleRedBehindGreen(List<Container> currentState) {
+        boolean greenFrogFound = false;
+        boolean doubleRedFound = false;
+        for (int containerIndex = 0; containerIndex < currentState.size() - 1 /*-1 because we check +1*/; containerIndex++) {
+            Container container = currentState.get(containerIndex);
+
+            if (!greenFrogFound && containerHasGreenFrog(container)) {
+                greenFrogFound = true;
+            }
+            if (!doubleRedFound && greenFrogFound) {
+                if (containerHasRedFrog(container) && containerHasRedFrog(currentState.get(containerIndex + 1))) {
+                    doubleRedFound = true;
+                }
+            } else if (doubleRedFound) {
+                if (containerHasGreenFrog(container)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean containerHasGreenFrog(Container container) {
+        return container.getContent() != null && container.getContent() instanceof FroschGrün;
+    }
+
+    private boolean doubleGreenBehindRed(List<Container> currentState) {
+        boolean redFrogFound = false;
+        boolean doubleGreenFound = false;
+
+        for (int containerIndex = 0; containerIndex < currentState.size() - 1 /*-1 because we check +1*/; containerIndex++) {
+            Container container = currentState.get(containerIndex);
+
+            if (!redFrogFound && containerHasRedFrog(container)) {
+                redFrogFound = true;
+            }
+            if (!doubleGreenFound && redFrogFound) {
+                if (containerHasGreenFrog(container) && containerHasGreenFrog(currentState.get(containerIndex + 1))) {
+                    doubleGreenFound = true;
+                }
+            } else if (doubleGreenFound) {
+                if (containerHasRedFrog(container)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean containerHasRedFrog(Container container) {
+        return container.getContent() != null && container.getContent() instanceof FroschRot;
     }
 
     public void recalculateWinningRoute() {

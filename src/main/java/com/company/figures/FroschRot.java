@@ -22,4 +22,9 @@ public class FroschRot implements Frog {
     public boolean jumpPossible(int indexFrom, int indexTo, Frog contentMiddle) {
         return jumpPossible(indexFrom,indexTo) && contentMiddle instanceof FroschGrün;
     }
+
+    @Override
+    public String toString() {
+        return "R";
+    }
 }

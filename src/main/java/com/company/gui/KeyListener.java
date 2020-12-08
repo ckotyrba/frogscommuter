@@ -19,8 +19,8 @@ public class KeyListener implements java.awt.event.KeyListener {
             gameFieldDrawer.getGameController().unDoLastJump();
         } else if (e.getKeyChar() == 'h') {
             gameFieldDrawer.getGameController().getAutoPlay().doNextMove();
-            gameFieldDrawer.repaint();
-//            autoPlay.startWithTimer(1000);
+        } else if (e.getKeyChar() == 'H') {
+            gameFieldDrawer.getGameController().getAutoPlay().startWithTimer(100);
         }
     }
 

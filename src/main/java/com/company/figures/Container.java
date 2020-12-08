@@ -36,4 +36,9 @@ public class Container implements Item {
     public Container copy() {
         return new Container(image, content);
     }
+
+    @Override
+    public String toString() {
+        return "["+ content +"]";
+    }
 }

@@ -5,8 +5,6 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.*;
 
@@ -15,9 +13,9 @@ import com.company.Level.LevelLoader;
 import com.company.figures.Container;
 import com.company.gamelogic.GameController;
 
-public class GameFieldDrawer extends JPanel implements Observer {
+public class GameFieldDrawer extends JPanel {
 
-    private static final int ZOOM = 4;
+    private static double ZOOM = 4;
     private final JFrame frame;
 
     private int levelId = 1;
@@ -38,6 +36,7 @@ public class GameFieldDrawer extends JPanel implements Observer {
     private void init(Level level) {
         this.level = level;
         this.gameController = new GameController(level.getLogicalOrder());
+        gameController.setDrawer(this);
         this.backgroundlevel = createBackgroundImage();
 
         // workaround to clear resize caches
@@ -124,7 +123,7 @@ public class GameFieldDrawer extends JPanel implements Observer {
 
 
     private static int getFieldSize() {
-        return PIXEL_SIZE * ZOOM;
+        return (int) Math.round(PIXEL_SIZE * ZOOM);
     }
 
     @Override
@@ -176,8 +175,12 @@ public class GameFieldDrawer extends JPanel implements Observer {
         if (gameController.won()) {
             levelId++;
         }
-        if (levelId <= 3) {
+        if (levelId <= 4) {
+            if (levelId == 4) {
+                ZOOM = 1.5;
+            }
             init(LevelLoader.getLevel(levelId));
+
         }
     }
 
@@ -185,9 +188,4 @@ public class GameFieldDrawer extends JPanel implements Observer {
         return gameController;
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        repaint();
-        System.out.println("observer repaint");
-    }
 }

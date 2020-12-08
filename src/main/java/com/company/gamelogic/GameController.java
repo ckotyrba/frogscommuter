@@ -5,13 +5,15 @@ import java.util.List;
 
 import com.company.figures.Container;
 import com.company.figures.Frog;
+import com.company.gui.GameFieldDrawer;
 
-public class GameController  {
+public class GameController {
 
     private final List<Container> containers;
 
     private List<Move> moves = new ArrayList<>();
     private AutoPlay autoPlay;
+    private GameFieldDrawer drawer;
 
     public GameController(List<Container> containers) {
         this.containers = containers;
@@ -51,6 +53,9 @@ public class GameController  {
         Frog toFrog = to.getContent();
         to.setContent(fromFrog);
         from.setContent(toFrog);
+        if (drawer != null) {
+            drawer.repaint();
+        }
     }
 
 
@@ -60,13 +65,17 @@ public class GameController  {
             if (Math.abs(indexFrom - indexTo) == 1) {
                 return contentFrom.jumpPossible(indexFrom, indexTo);
             } else if (Math.abs(indexFrom - indexTo) == 2) {
-                int indexMiddle = Math.min(indexFrom, indexTo) + 1;
-                Frog contentMiddle = containers.get(indexMiddle).getContent();
+                Frog contentMiddle = getMiddleContainerContent(indexFrom, indexTo);
                 if (contentMiddle != null)
                     return contentFrom.jumpPossible(indexFrom, indexTo, contentMiddle);
             }
         }
         return false;
+    }
+
+    public Frog getMiddleContainerContent(int indexFrom, int indexTo) {
+        int indexMiddle = Math.min(indexFrom, indexTo) + 1;
+        return containers.get(indexMiddle).getContent();
     }
 
     public boolean won() {
@@ -108,6 +117,9 @@ public class GameController  {
         return autoPlay;
     }
 
+    public void setDrawer(GameFieldDrawer drawer) {
+        this.drawer = drawer;
+    }
 
     public static class Move {
         final int indexFrom;

@@ -34,8 +34,6 @@ public class Application extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-
-        spielFeld.resetLevel();
     }
 
     public static void main(String[] args) {
